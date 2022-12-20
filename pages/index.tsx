@@ -16,10 +16,45 @@ type Game = {
 
 const subjects = [
   { subject: 'fotboll', category: 'sport' },
+  { subject: 'golf', category: 'sport' },
   { subject: 'hockey', category: 'sport' },
   { subject: 'tennis', category: 'sport' },
   { subject: 'basket', category: 'sport' },
-  { subject: 'cykling', category: 'sport' },
+  { subject: 'cykel', category: 'fordon' },
+  { subject: 'bil', category: 'fordon' },
+  { subject: 'båt', category: 'fordon' },
+  { subject: 'kanot', category: 'fordon' },
+  { subject: 'flygplan', category: 'fordon' },
+  { subject: 'hus', category: 'saker' },
+  { subject: 'konsert', category: 'musik' },
+  { subject: 'fiol', category: 'musik' },
+  { subject: 'piano', category: 'musik' },
+  { subject: 'gitarr', category: 'musik' },
+  { subject: 'äpple', category: 'mat' },
+  { subject: 'banan', category: 'mat' },
+  { subject: 'tårta', category: 'mat' },
+  { subject: 'ägg', category: 'mat' },
+  { subject: 'eld', category: 'utomhus' },
+  { subject: 'gran', category: 'utomhus' },
+  { subject: 'hav', category: 'utomhus' },
+  { subject: 'sol', category: 'utomhus' },
+  { subject: 'glass', category: 'sommarlov' },
+  { subject: 'elefant', category: 'djur' },
+  { subject: 'ko', category: 'djur' },
+  { subject: 'häst', category: 'djur' },
+  { subject: 'gris', category: 'djur' },
+  { subject: 'mygga', category: 'djur' },
+  { subject: 'geting', category: 'djur' },
+  { subject: 'krabba', category: 'djur' },
+  { subject: 'jultomte', category: 'högtider' },
+  { subject: 'midsommarstång', category: 'högtider' },
+  { subject: 'påskägg', category: 'högtider' },
+  { subject: 'halloween-pumpa', category: 'högtider' },
+  { subject: 'lampa', category: 'elektronik' },
+  { subject: 'dator', category: 'elektronik' },
+  { subject: 'smartphone', category: 'elektronik' },
+  { subject: 'kaffekopp', category: 'saker' },
+  { subject: 'stekpanna', category: 'saker' },
 ];
 
 const colors = {
@@ -84,7 +119,7 @@ const IndexPage = () => {
         style={{
           backgroundColor: colors.pink,
           paddingBottom: '80px',
-        }} className='flex flex-col'>
+        }} className='flex flex-col items-center'>
         <h1 style={{
           color: colors.yellow,
           backgroundColor: colors.pink,
@@ -97,132 +132,135 @@ const IndexPage = () => {
           width: '100%',
           fontWeight: 'bold',
         }} className="p-4 text-center">A FAKE ARTIST GOES TO NEW YORK</h1>
-        {state === 'waiting' && (
-          <ListOfPlayers players={players} setPlayers={setPlayers} setupGame={setupRound} />
-        )}
-        {state === 'preparing' && (
-          <Prepare players={players} subject={subject} setState={setState} />
-        )}
-        {state === 'playing' && (
-          <div className="flex flex-col items-center justify-start min-h-screen p-6 gap-6">
-            <Heading>Dags att rita!</Heading>
-            <Text>Rita 2 omgångar var. När du lyfter pennan är det nästa persons tur</Text>
-            <Heading>Kategori: {subject.category}</Heading>
-            <button onClick={() => {
-              setState('voting');
-            }}
-              className="p-4" style={{ backgroundColor: colors.yellow }}>Vi är klara!</button>
-          </div>
-        )}
-        {state === 'voting' && (
-          <div className="flex flex-col items-center justify-start min-h-screen p-6 gap-6">
-            <Heading>Kan ni hitta den falska konstnären?</Heading>
-            <Text>Räkna gemensamt ner från 3. När ni kommer till 0 pekar alla på den person de tror är den falska konstnären.</Text>
-            <Text>Gissade ni rätt?</Text>
-            <div className="flex flex-row gap-4">
+        <div style={{ maxWidth: '800px' }}>
+
+          {state === 'waiting' && (
+            <ListOfPlayers players={players} setPlayers={setPlayers} setupGame={setupRound} />
+          )}
+          {state === 'preparing' && (
+            <Prepare players={players} subject={subject} setState={setState} />
+          )}
+          {state === 'playing' && (
+            <div className="flex flex-col items-center justify-start min-h-screen p-6 gap-6">
+              <Heading>Dags att rita!</Heading>
+              <Text>Rita 2 omgångar var. När du lyfter pennan är det nästa persons tur</Text>
+              <Heading>Kategori: {subject.category}</Heading>
               <button onClick={() => {
-                setState('guessing');
+                setState('voting');
               }}
-                className="p-4 px-8" style={{ backgroundColor: colors.yellow }}>Ja</button>
-              <button onClick={() => {
-                finishRound('fake');
-                if (game.currentRound === numberOfRounds) {
-                  setState('finished');
-                } else {
-                  setState('summary');
-                }
-              }}
-                className="p-4 px-8" style={{ backgroundColor: colors.yellow }}>Nej</button>
+                className="p-4" style={{ backgroundColor: colors.yellow }}>Vi är klara!</button>
             </div>
-          </div>
-        )}
-        {state === 'guessing' && (
-          <div className="flex flex-col items-center justify-start min-h-screen p-6 gap-2">
-            <Heading>{players.find(player => player.fakeArtist === true).name}, dags att gissa!</Heading>
-            <Text>Vilket ämne det var gruppen ritade.</Text>
-            <Text>Gissade du rätt?</Text>
-            <div className="flex flex-row gap-4">
-              <button onClick={() => {
-                finishRound('fake');
-                if (game.currentRound === numberOfRounds) {
-                  setState('finished');
-                } else {
-                  setState('summary');
-                }
-              }}
-                className="p-4" style={{ backgroundColor: colors.yellow }}>Ja</button>
-              <button onClick={() => {
-                finishRound('real');
-                if (game.currentRound === numberOfRounds) {
-                  setState('finished');
-                } else {
-                  setState('summary');
-                }
-              }}
-                className="p-4" style={{ backgroundColor: colors.yellow }}>Nej</button>
+          )}
+          {state === 'voting' && (
+            <div className="flex flex-col items-center justify-start min-h-screen p-6 gap-6">
+              <Heading>Kan ni hitta den falska konstnären?</Heading>
+              <Text>Räkna gemensamt ner från 3. När ni kommer till 0 pekar alla på den person de tror är den falska konstnären.</Text>
+              <Text>Gissade ni rätt?</Text>
+              <div className="flex flex-row gap-4">
+                <button onClick={() => {
+                  setState('guessing');
+                }}
+                  className="p-4 px-8" style={{ backgroundColor: colors.yellow }}>Ja</button>
+                <button onClick={() => {
+                  finishRound('fake');
+                  if (game.currentRound === numberOfRounds) {
+                    setState('finished');
+                  } else {
+                    setState('summary');
+                  }
+                }}
+                  className="p-4 px-8" style={{ backgroundColor: colors.yellow }}>Nej</button>
+              </div>
             </div>
-          </div>
-        )}
-        {state === 'summary' && (
-          <div className="flex flex-col items-center justify-start min-h-screen p-6 gap-4">
-            <Heading>Omgång {game.currentRound}/{numberOfRounds} klar!</Heading>
-            <Text>{game.currentRoundWinner === 'fakeArtist' ? 'Den falska konstnären ' : 'De äkta konstärerna '} vann och fick poäng!</Text>
-            <table className="w-full">
-              <thead>
-                <tr>
-                  <th><Text bold={true}>Spelare</Text></th>
-                  <th><Text bold={true}>Poäng</Text></th>
-                </tr>
-              </thead>
-              <tbody>
-                {players.map(player => (
-                  <tr key={player.name}>
-                    <th><Text>{player.name}</Text></th>
-                    <th><Text>{player.points}</Text></th>
+          )}
+          {state === 'guessing' && (
+            <div className="flex flex-col items-center justify-start min-h-screen p-6 gap-2">
+              <Heading>{players.find(player => player.fakeArtist === true).name}, dags att gissa!</Heading>
+              <Text>Vilket ämne det var gruppen ritade.</Text>
+              <Text>Gissade du rätt?</Text>
+              <div className="flex flex-row gap-4">
+                <button onClick={() => {
+                  finishRound('fake');
+                  if (game.currentRound === numberOfRounds) {
+                    setState('finished');
+                  } else {
+                    setState('summary');
+                  }
+                }}
+                  className="p-4" style={{ backgroundColor: colors.yellow }}>Ja</button>
+                <button onClick={() => {
+                  finishRound('real');
+                  if (game.currentRound === numberOfRounds) {
+                    setState('finished');
+                  } else {
+                    setState('summary');
+                  }
+                }}
+                  className="p-4" style={{ backgroundColor: colors.yellow }}>Nej</button>
+              </div>
+            </div>
+          )}
+          {state === 'summary' && (
+            <div className="flex flex-col items-center justify-start min-h-screen p-6 gap-4">
+              <Heading>Omgång {game.currentRound}/{numberOfRounds} klar!</Heading>
+              <Text>{game.currentRoundWinner === 'fakeArtist' ? 'Den falska konstnären ' : 'De äkta konstärerna '} vann och fick poäng!</Text>
+              <table className="w-full">
+                <thead>
+                  <tr>
+                    <th><Text bold={true}>Spelare</Text></th>
+                    <th><Text bold={true}>Poäng</Text></th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <button onClick={() => {
-              if (game.currentRound < 3) {
-                setupRound();
-              } else {
-                setState('finished');
-              }
-            }}
-              className="p-4" style={{ backgroundColor: colors.yellow }}>Nästa omgång</button>
-          </div>
-        )}
-        {state === 'finished' && (
-          <div className="flex flex-col items-center justify-start min-h-screen p-6 gap-4">
-            <Heading>{players[0]?.name} är dagens vinnare!</Heading>
-            <table className="w-full">
-              <thead>
-                <tr>
-                  <th><Text bold={true}>Spelare</Text></th>
-                  <th><Text bold={true}>Poäng</Text></th>
-                </tr>
-              </thead>
-              <tbody>
-                {players.map(player => (
-                  <tr key={player.name}>
-                    <th><Text>{player.name}</Text></th>
-                    <th><Text>{player.points}</Text></th>
+                </thead>
+                <tbody>
+                  {players.map(player => (
+                    <tr key={player.name}>
+                      <th><Text>{player.name}</Text></th>
+                      <th><Text>{player.points}</Text></th>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <button onClick={() => {
+                if (game.currentRound < 3) {
+                  setupRound();
+                } else {
+                  setState('finished');
+                }
+              }}
+                className="p-4" style={{ backgroundColor: colors.yellow }}>Nästa omgång</button>
+            </div>
+          )}
+          {state === 'finished' && (
+            <div className="flex flex-col items-center justify-start min-h-screen p-6 gap-4">
+              <Heading>{players[0]?.name} är dagens vinnare!</Heading>
+              <table className="w-full">
+                <thead>
+                  <tr>
+                    <th><Text bold={true}>Spelare</Text></th>
+                    <th><Text bold={true}>Poäng</Text></th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <button onClick={() => {
-              setPlayers(currentPlayers => currentPlayers.map(currentPlayer => ({ ...currentPlayer, points: 0 })));
-              setGame(game => ({
-                ...game,
-                currentRound: 0,
-              }))
-              setState('waiting');
-            }}
-              className="p-4" style={{ backgroundColor: colors.yellow }}>Starta nytt spel</button>
-          </div>
-        )}
+                </thead>
+                <tbody>
+                  {players.map(player => (
+                    <tr key={player.name}>
+                      <th><Text>{player.name}</Text></th>
+                      <th><Text>{player.points}</Text></th>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <button onClick={() => {
+                setPlayers(currentPlayers => currentPlayers.map(currentPlayer => ({ ...currentPlayer, points: 0 })));
+                setGame(game => ({
+                  ...game,
+                  currentRound: 0,
+                }))
+                setState('waiting');
+              }}
+                className="p-4" style={{ backgroundColor: colors.yellow }}>Starta nytt spel</button>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
