@@ -37,7 +37,6 @@ const IndexPage = () => {
   const [game, setGame] = useState<Game>({ currentRound: 0, });
 
   const [players, setPlayers] = useState<Player[]>(Array(3).fill(emptyPlayer));
-  console.log('players:', players)
 
   const setupRound = useCallback(
     () => {
